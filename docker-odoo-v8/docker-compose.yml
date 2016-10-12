@@ -1,0 +1,28 @@
+version: '2'
+services:
+
+  server:
+    image: odoo:8
+    links:
+      - db:db
+    depends_on:
+      - db
+    volumes:
+      - ./data/odoo-v8/config:/etc/odoo
+      - ./data/odoo-v8/addons:/mnt/extra-addons
+      - ./data/odoo-v8/filestore:/var/lib/odoo/filestore
+    environment:
+    - DB_PORT_5432_TCP_ADDR=db
+    - DB_PORT_5432_TCP_PORT=5432
+    - DB_ENV_POSTGRES_PASSWORD=odoo
+    - DB_ENV_POSTGRES_USER=odoo
+    ports:
+      - '8070:8069'
+
+  db:
+    image: postgres:9.5
+    volumes:
+      - ./data/postgresql-odoo-v8:/var/lib/postgresql
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
