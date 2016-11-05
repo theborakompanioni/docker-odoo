@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+
+  ## cadvisor: resource usage and performance of containers
+  cadvisor:
+    image: google/cadvisor:latest
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8082:8080"
+
+  # pgadmin: interface for postgresql
+  pgadmin:
+    image: thajeztah/pgadmin4
+    restart: unless-stopped
+    container_name: odoo-dev-pgadmin1
+    ports:
+      - '9080:80'

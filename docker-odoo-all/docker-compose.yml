@@ -1,55 +1,69 @@
 version: '2'
-services:
-  odoov9:
-    image: odoo:9
-    links:
-      - postgresodoo9:db
-    volumes:
-      - ./config/odoo-v9:/etc/odoo
-      - ./data/odoo-v9/addons:/mnt/extra-addons
-      - ./data/odoo-v9/filestore:/var/lib/odoo/filestore
-    environment:
-    - DB_PORT_5432_TCP_ADDR=db
-    - DB_PORT_5432_TCP_PORT=5432
-    - DB_ENV_POSTGRES_PASSWORD=odoo
-    - DB_ENV_POSTGRES_USER=odoo
-    ports:
-      - '8069:8069'
-  postgresodoo9:
-    image: postgres:9.5
-    volumes:
-      - ./data/postgresql-odoo-v9:/var/lib/postgresql
-    environment:
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
 
-  pgadminodoo9:
-    image: thajeztah/pgadmin4
+networks:
+  odoo_v9_network:
+    driver: bridge
+  odoo_v8_network:
+    driver: bridge
+
+services:
+
+  cadvisor:
+    extends:
+      file: docker-compose-common.yml
+      service: cadvisor
+    container_name: odoo-dev-cadvisor1
+
+  pgadmin:
+    extends:
+      file: docker-compose-common.yml
+      service: pgadmin
+    container_name: odoo-dev-pgadmin1
+    networks:
+      - odoo_v8_network
+      - odoo_v9_network
+    links:
+      - postgresodoo8
+      - postgresodoo9
+
+
+  odoov9:
+    extends:
+      file: docker-compose-odoo-v9.yml
+      service: odoov9
+    container_name: odoo-dev-v9_1
+    depends_on:
+      - postgresodoo9
     links:
       - postgresodoo9:db
-    ports:
-      - '9080:80'
+    networks:
+      - odoo_v9_network
+
+  postgresodoo9:
+    extends:
+      file: docker-compose-odoo-v9.yml
+      service: postgresodoo9
+    container_name: odoo-dev-v9-db1
+    networks:
+      - odoo_v9_network
+
 
   odoov8:
-    image: odoo:8
+    extends:
+      file: docker-compose-odoo-v8.yml
+      service: odoov8
+    container_name: odoo-dev-v8_1
+    depends_on:
+      - postgresodoo8
     links:
       - postgresodoo8:db
-    volumes:
-      - ./config/odoo-v8:/etc/odoo
-      - ./data/odoo-v8/addons:/mnt/extra-addons
-      - ./data/odoo-v8/filestore:/var/lib/odoo/filestore
-    environment:
-    - DB_PORT_5432_TCP_ADDR=db
-    - DB_PORT_5432_TCP_PORT=5432
-    - DB_ENV_POSTGRES_PASSWORD=odoo
-    - DB_ENV_POSTGRES_USER=odoo
-    ports:
-      - '8070:8069'
+    networks:
+      - odoo_v8_network
 
   postgresodoo8:
-    image: postgres:9.5
-    volumes:
-      - ./data/postgresql-odoo-v8:/var/lib/postgresql
-    environment:
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
+    extends:
+      file: docker-compose-odoo-v8.yml
+      service: postgresodoo8
+    container_name: odoo-dev-v8-db
+    networks:
+      - odoo_v8_network
