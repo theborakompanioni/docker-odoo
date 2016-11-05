@@ -5,7 +5,7 @@ services:
     links:
       - postgresodoo9:db
     volumes:
-      - ./data/odoo-v9/config:/etc/odoo
+      - ./config/odoo-v9:/etc/odoo
       - ./data/odoo-v9/addons:/mnt/extra-addons
       - ./data/odoo-v9/filestore:/var/lib/odoo/filestore
     environment:
@@ -35,7 +35,7 @@ services:
     links:
       - postgresodoo8:db
     volumes:
-      - ./data/odoo-v8/config:/etc/odoo
+      - ./config/odoo-v8:/etc/odoo
       - ./data/odoo-v8/addons:/mnt/extra-addons
       - ./data/odoo-v8/filestore:/var/lib/odoo/filestore
     environment:

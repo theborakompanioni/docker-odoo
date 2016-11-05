@@ -7,7 +7,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./data/odoo-v9/config:/etc/odoo
+      - ./config/odoo-v9:/etc/odoo
       - ./data/odoo-v9/addons:/mnt/extra-addons
       - ./data/odoo-v9/filestore:/var/lib/odoo/filestore
     environment:
