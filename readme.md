@@ -3,6 +3,7 @@ odoo-dev
 
 A local development environment for running odoo.
 
+A list of included containers:
 - [cadvisor](https://github.com/google/cadvisor)
 - [odoo](https://github.com/odoo/odoo)
 - [pgadmin](https://www.pgadmin.org/)
@@ -19,6 +20,7 @@ start all containers (v8 and v9):
 ```
 
 start only odoo v9
+```
 > docker-compose up odoov9 pgadmin
 ```
 
