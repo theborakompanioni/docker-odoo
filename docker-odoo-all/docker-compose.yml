@@ -22,9 +22,6 @@ services:
     networks:
       - odoo_v8_network
       - odoo_v9_network
-    links:
-      - postgresodoo8
-      - postgresodoo9
 
 
   odoov9:

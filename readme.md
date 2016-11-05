@@ -10,10 +10,16 @@ A local development environment for running odoo.
 
 
 # getting started
+
+start all containers (v8 and v9):
 ```
 > git clone https://github.com/theborakompanioni/docker-odoo.git
 > cd docker-odoo
 > docker-compose up --build
+```
+
+start only odoo v9
+> docker-compose up odoov9 pgadmin
 ```
 
 # environment
