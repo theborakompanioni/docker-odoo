@@ -23,6 +23,13 @@ services:
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
 
+  pgadminodoo9:
+    image: thajeztah/pgadmin4
+    links:
+      - postgresodoo9:db
+    ports:
+      - '9080:80'
+
   odoov8:
     image: odoo:8
     links:
